@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Modern JavaScript</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Scott Preston">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>Modern JavaScript</h1>
+
+            <p>
+                <small>Created by <a href="http://scottpreston.com">Scott Preston</a> / <a
+                        href="http://twitter.com/scottpreston">@scottpreston</a></small>
+            </p>
+        </section>
+        <section>
+            <h1>About Me</h1>
+            <ul>
+                <li>Practice Lead AIS/ICC - JavaScript/Grails/Mobile</li>
+                <li>Love JavaScript</li>
+                <li>Robots & Smart Home Running in JS</li>
+            </ul>
+        </section>
+        <section>
+                    <h1>Presentation</h1>
+                    <ul>
+                        <li>Modern JS</li>
+                        <li>Pairing / Live Programming - Robot</li>
+                    </ul>
+                </section>
+        <section>
+            <h1>First, notice something about this Slide Deck?</h1>
+
+            <p>Reveal.JS</p>
+        </section>
+        <section>
+            <section>
+                <h1>Pure JavaScript</h1>
+            </section>
+            <section>
+                <h1>Objects</h1>
+                <p>Are there classes in JavaScript?</p>
+            </section>
+            <section><h3>Object Examples</h3>
+                        <pre><code contenteditable>
+var a = {}; // easiest object ever
+var b = new Object(); // js for java developers
+function c() {}; // functions are objects too
+                        </code></pre>
+            </section>
+            <section><h3>Method (Literal Notation)</h3>
+<pre><code contenteditable>
+var a = {
+    foo: function() {
+        alert('hello');
+    },
+    bar: function(a){
+        alert(a);
+    }
+};
+</code></pre>
+            </section>
+            <section><h3>Method (Function Notation)</h3>
+            <pre><code contenteditable>
+var a = {}; // or new Object();
+a.foo = function() {
+    alert('hello');
+};
+a.bar = function(a) {
+    alert(a);
+}:
+</code></pre>
+            </section>
+
+        <section><h3>Scope</h3>
+        <p>This is how you create instance variables.</p>
+                    <pre><code contenteditable>
+var a = new function() {
+    this.count = 1;
+    this.bar = function() {
+        alert(this.count);
+        this.count++;
+    }
+};
+a.bar(); // execute
+a.bar(); // execute
+        </code></pre>
+                    </section>
+                    <section><h2>Scope Part 2</h2>
+                    <p>How do you reference this twice?</p>
+            <pre><code contenteditable>
+var a = new function() {
+    this.count = 1;
+    this.bar = function() {
+        var counter = function() {
+            this.counter = function() {
+                this.count++; // THIS WILL ERROR!!!
+            }
+        };
+        var counter = function() {
+            var that = this; // reference outer object 'a'
+            this.counter = function() {
+                that.count++; // THIS WILL WORK!
+            }
+        };
+    }
+}
+            </code></pre>
+                </section>
+        <section>
+            <h2>Literals vs. new()</h2>
+            <ul>
+                <li>Literals - Singltons & Data</li>
+                <li>new() - 'instances' & Multiple copies</li>
+            </ul>
+        </section><!-- end of Objects -->
+        <section>
+            <h2>Functions</h2>
+            <p>First class and can be passed around like variables/objects.</p>
+        </section>
+            <section>
+                        <h2>Immediate Anonymous Functions </h2>
+                        <p>Have you heard of these?</p>
+                    </section>
+                    <section>
+                        <h2>Anonymous Function Example</h2>
+                        <p>They look like normal functions but...</p>
+                        <pre><code contenteditable>
+function hello() {
+    alert('hi all!');
+}(); // two added parens cause immediate execution
+</code></pre>
+                    </section>
+            <section>
+                                    <h2>Note on Convention</h2>
+                                    <pre><code contenteditable>
+(function hello() {
+    alert('hi all!');
+})(); // two added parens cause immediate execution
+            </code></pre>
+                                </section>
+            <section>
+            <h2>Modules</h2>
+<pre><code contenteditable>
+var Module = (function () {
+    alert('hi all!');
+})();
+
+
+var Module = (function () {
+    var privateMethod1 = function() {};
+    var privateMethod2 = function() {};
+    return {
+        publicMethod: function() {
+            // ...
+        }
+    }
+})();
+
+</code></pre>
+    </section>
+            <section>
+            <h2>Modules Everywhere</h2>
+<pre><code contenteditable>
+var Module = (function () {
+    alert('hi all!');
+})();
+
+
+// or jQuery Pattern?
+
+(function () {
+    var m = function() {
+        alert('hi all!');
+    };
+    window.Module = m;
+    window.jQuery = window.$ = m;
+})();
+
+</code></pre>
+    </section>
+        </section>
+        <section>
+            <section>
+            <h1>Frameworks</h1>
+            </section>
+            <section>
+                <h2>jQuery - $ </h2>
+                <pre><code contenteditable>
+$("#selector").click(function() {
+    // stuff
+});
+                </code></pre>
+            </section>
+            <section>
+            <h2>jQuery UI</h2>
+                <p><a href="http://jqueryui.com/">http://jqueryui.com</a></p>
+                <p><img src="images/jquery-ui.png"></p>
+            </section>
+            <section>
+                <h2>jQuery Mobile</h2>
+                <p><a href="http://jquerymobile.com/">http://jquerymobile.com</a></p>
+                <p><img src="images/jquery-mobile.png"></p>
+            </section>
+            <section>
+                <h2>Twitter Boostrap</h2>
+                <p><a href="http://getbootstrap.com">http://getbootstrap.com</a></p>
+                <p><img src="images/bootstap.png"></p>
+            </section>
+            <section>
+                <h2>YUI</h2>
+                <p><a href="http://yuilibrary.com">http://yuilibrary.com</a></p>
+                <p><img src="images/yui.png"></p>
+            </section>
+            <section>
+            <h2>Dojo</h2>
+                <p><a href="http://dojotoolkit.org">http://dojotoolkit.org</a></p>
+                <p><img src="images/dojo.png"></p>
+            </section>
+            <section>
+                <h2>How To Choose?</h2>
+                <p><img src="images/jquery-dojo-yui.png"></p>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Libraries</h1>
+                <p>More specialized than frameworks.</p>
+            </section>
+            <section>
+                <h2>AMD / RequireJS</h2>
+                <p><a href="http://requirejs.org">http://requirejs.org</a></p>
+                <p>A.M.D. - Asynchronous Module Definition</p>
+                <p><img src="images/requirejs.png"></p>
+            </section>
+            <section>
+             <h2>How to load JavaScript in the 90's</h2>
+                <pre><code contenteditable>
+<script src="js/jquery.js" type="application/javascript"></script>
+<script src="js/script.js" type="application/javascript"></script>
+<script src="js/script2.js" type="application/javascript"></script>
+<script src="js/script3.js" type="application/javascript"></script>
+          </code></pre>
+
+             </section>
+            <section>
+            <h2>RequireJS - 3 Steps</h2>
+            <ol>
+                <li>Include The Library</li>
+                <li>define()</li>
+                <li>require()</li>
+            </ol>
+            </section>
+            <section>
+            <h2>Including The Library</h2>
+            <pre><code contenteditable>
+<script data-main="scripts/main" src="scripts/require.js"></script>
+</code></pre>
+        </section>
+            <section>
+            <h2>Defining Modules</h2>
+            <pre><code contenteditable>
+define(["./cart", "./inventory"], function(cart, inventory) {
+//return an object to define the "my/shirt" module.
+    return {
+        color: "blue",
+        size: "large",
+        addToCart: function() {
+            inventory.decrement(this);
+            cart.add(this);
+        }
+    }
+});
+</code></pre>
+            </section>
+
+            <section>
+            <h2>Requiring Modules</h2>
+            <pre><code contenteditable>
+require(["one", "two", "three"], function (one, two, three) {
+
+});
+</code></pre>
+            </section>
+            <section>
+            <h2>How Does This Work?</h2>
+            <p>First let's define an array and a define()</p>
+        <pre><code contenteditable>
+var modules = [];
+function define(name, callback) {
+    modules[name] = callback;
+}
+</code></pre>
+        </section>
+        <section>
+            <h2>Define A Module</h2>
+            <pre><code contenteditable>
+define("foo", function() {
+    var foo = {
+        a: 1,
+        b: 2,
+        add: function () {
+            return this.a + this.b;
+        }
+    };
+    return foo;
+});
+            </code></pre>
+        </section>
+
+            <section>
+            <h2>Create A Loader</h2>
+
+        <pre><code contenteditable>
+function load(file, callback) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = file + ".js";
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = function() {
+        callback(modules[file]);
+    };
+}
+
+// callback is just executing a function (functions are variables)
+modules[file] =  function() {
+    var foo = {
+        a: 1,
+        b: 2,
+        add: function () {
+            return this.a + this.b;
+        }
+    };
+    return foo;
+}
+</code></pre>
+        </section>
+        <section>
+            <h2>The Loader</h2>
+            <pre><code contenteditable>
+load('foo', function (foo){
+    var f = new foo();
+    f.a = 100;
+    f.b = 200;
+    alert(f.add());
+});
+</code></pre>
+        </section>
+        <section>
+            <h2>Handlebars</h2>
+            <p><a href="http://handlebarsjs.com">http://handlebarsjs.com</a></p>
+            <p><img src="images/handlebars.png"></p>
+        </section>
+            <section>
+                <h2>Sample Handlebars Template</h2>
+                <pre><code contenteditable>
+<script id="entry-template" type="text/x-handlebars-template">
+    <div class="entry">
+        <h1>{{title}}</h1>  <!---- This Line -->
+        <div class="body">
+        {{body}}            <!---- This Line -->
+        </div>
+    </div>
+</script>
+<script>
+    var source   = $("#entry-template").html();
+    var template = Handlebars.compile(source);
+    var context = {title: "My New Post", body: "This is my first post!"}
+    var html    = template(context);
+</script>
+    </code></pre>
+    </section>
+         <section>
+            <h2>Underscore or _</h2>
+            <p>Utility Belt - Collections</p>
+            <p><a href="http://underscorejs.org">http://underscorejs.org</a></p>
+            <p><img src="images/underscore.png"></p>
+        </section>
+            <section>
+                        <h2>D3</h2>
+                        <p>Data. Driven. Design.</p>
+                        <p><a href="http://d3js.org">http://d3js.org</a></p>
+                        <p><img src="images/d3.png"></p>
+                    </section>
+            <section>
+                        <h2>Fabric JS</h2>
+                        <p>Working with Canvas</p>
+                        <p><a href="http://fabricjs.com">http://fabricjs.com</a></p>
+                        <p><img src="images/fabricjs.png"></p>
+                    </section>
+            <section>
+                        <h2>Canvas JS</h2>
+                        <p>More Working With Canvas</p>
+                        <p><a href="http://canvasjs.com">http://canvasjs.com</a></p>
+                        <p><img src="images/canvasjs.png"></p>
+                    </section>
+            <section>
+                <h2>Jasmine</h2>
+                <p><a href="http://jasmine.github.io">http://jasmine.github.io</a></p>
+                <p><img src="images/jasmine.png"></p>
+            </section>
+            <section>
+                            <h2>Mocha</h2>
+                            <p><a href="http://visionmedia.github.io/mocha/">http://visionmedia.github.io/mocha</a></p>
+                            <p><img src="images/mocha.png"></p>
+                        </section>
+            <section>
+                            <h2>QUnit</h2>
+                            <p><a href="http://qunitjs.com/">http://qunitjs.com</a></p>
+                            <p><img src="images/qunit.png"></p>
+                        </section>
+        </section> <!-- end of libraries -->
+        <section>
+            <section>
+            <h1>MV*</h1>
+            </section>
+            <section><h2>What's MV*?</h2></section>
+            <section>
+            <h2>MVC</h2>
+            <p>Model. View. Controller.</p>
+            <p><img src="images/mvc.png"></p>
+            </section>
+            <section>
+                <h2>MVVM</h2>
+                <p>Model. View. ViewModel.</p>
+                <p><img src="images/mvvm.png"></p>
+            </section>
+            <section>
+                <h2>MV* in JS</h2>
+                <p>Same as Server Pattern, but no DB. REST.</p>
+                <ul>
+                    <li>Model - Holds Data. Makes Ajax Calls. CRUD.</li>
+                    <li>Service - Coordinates Calls To Models. Composite Models.</li>
+                    <li>Controllers - Calls Models/Services Passes Data to Views</li>
+                    <li>Views - HTML/Objects Binding Data, Handling Events.</li>
+                </ul>
+            </section>
+            <section>
+                <h2>AngularJS</h2>
+                <p>Developed By Google. Very Popular.</p>
+                <p><img src="images/angularjs.png"></p>
+            </section>
+            <section>
+                <h2>BackboneJS</h2>
+                <p>Tends to be opinionated. Uses Handlebars.</p>
+                <p><img src="images/backbone.png"></p>
+            </section>
+            <section>
+                <h2>EmberJS</h2>
+                <p>Yet another MVC framework that uses Handlebars.</p>
+                <p><img src="images/emberjs.png"></p>
+            </section>
+            <section>
+                <h2>Example Code - Setup</h2>
+<pre><code contenteditable>&lt;html ng-app="phonecatApp"&gt;
+&lt;head&gt;
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+&lt;/head&gt;
+&lt;body&gt; ng-controller="PhoneListCtrl">
+  <ul>
+    <li ng-repeat="phone in phones">
+      {{phone.name}}
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+            </section>
+            <section>
+                <h2>The Controller</h2>
+                <pre><code contenteditable>
+var phonecatApp = angular.module('phonecatApp', []);
+
+phonecatApp.controller('PhoneListCtrl', function ($scope) {
+  $scope.phones = [
+    {'name': 'Nexus S',
+     'snippet': 'Fast just got faster with Nexus S.'},
+    {'name': 'Motorola XOOM with Wi-Fi',
+     'snippet': 'The Next, Next Generation tablet.'},
+    {'name': 'MOTOROLA XOOM',
+     'snippet': 'The Next, Next Generation tablet.'}
+  ];
+});
+    </code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+            <h1>NodeJS</h1></section>
+            <section>
+            <h2>Server Side JS</h2>
+            <p><a href="http://nodejs.org/">http://nodejs.org/</a></p>
+            <p><img src="images/node.png"></p>
+            </section>
+            <section><h2>Why Server Side JS?</h2>
+            <ul>
+                <li>Robots</li>
+                <li>Non-Blocking IO</li>
+                <li>Tooling - Builds, Automating Test, Etc</li>
+            </ul>
+            </section>
+            <section>
+                <h2>NPM - Node Package Manager</h2>
+                <pre><code contenteditable>
+npm install serialport -g // globally
+npm install serialport --save-dev // locally
+</code></pre>
+            </section>
+            <section>
+                <h2>Robot Node - Setup</h2>
+                <pre><code contenteditable>
+// Load the http module to create an http server.
+var http = require('http');
+var url = require('url');
+var port = 8000;
+var usbport = "/dev/ttyUSB0";
+var SerialPort = require("serialport").SerialPort;
+var sp = new SerialPort(usbport, {
+    baudrate: 9600
+});
+</code></pre>
+            </section>
+            <section>
+                <h2>Robot Node - write()</h2>
+                <pre><code contenteditable>
+function write(pin, pos) {
+    if (pin == "m") {
+        var posA = pos.split(",");
+        var b1 = [255, 0, posA[0]];
+        var b2 = [255, 1, posA[1]];
+        sp.write(b1);
+        sp.write(b2);
+        console.log("motion command writing (" + posA[0] + ", " + posA[1]);
+    }
+    if (pin >= 0 && pos >= 0) {
+        var b = [255, pin, pos];
+        sp.write(b);
+        console.log("serial port writing on pin=" + pin + ", position = " + pos);
+    }
+}
+</code></pre>
+            </section>
+            <section>
+                <h2>Robot Node - web server</h2>
+                <pre><code contenteditable>
+// Configure our HTTP server to respond with Hello World to all requests.
+var server = http.createServer(function (request, response) {
+    var headers = {};
+    headers["Access-Control-Allow-Origin"] = "*";
+    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+    headers["Access-Control-Allow-Credentials"] = false;
+    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+    headers["Content-Type"] = "text/plain";
+    response.writeHead(200, headers);
+    var url_parts = url.parse(request.url, true);
+    var pin = url_parts.query.pin;
+    var pos = url_parts.query.pos;
+    write(pin, pos);
+    response.end("pin = " + pin + ", position = " + pos);
+});
+
+// Listen on port 8000, IP defaults to 127.0.0.1
+server.listen(port);
+
+console.log("Server running at http://127.0.0.1:" + port);
+</code></pre>
+            </section>
+
+        </section><!-- node section -->
+
+        <section>
+            <section>
+            <h1>Build Systems</h1></section>
+            <section>
+            <h2>GruntJS</h2>
+            <p><a href="http://gruntjs.com">http://gruntjs.com</a></p>
+            <p><img src="images/grunt.png"></p>
+            </section>
+            <section>
+                            <h2>Sample Grunt FIle (91 Lines)</h2>
+                            <pre><code contenteditable>
+module.exports = function (grunt) {
+
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        uglify: {
+            libs: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: '../dist/lib-bundle.min.map'
+                },
+                files: {
+                    '../dist/lib-bundle.min.js': [ '../dist/lib-bundle.js' ]
+                }
+            },
+            app: {
+                options: {
+                    sourceMap: true,
+                    sourceMapName: '../dist/lunchosars.min.map'
+                },
+                files: {
+                    '../dist/lunchosars.min.js': [ '../dist/lunchosars.js' ]
+                }
+            }
+
+        },
+        jshint: {
+            all: ['../lunchosars/*.js', '../lunchosars/controllers/*.js']
+        },
+        jasmine: {
+            src: ['../jquery/*.js', '../src/*.js'],
+            options: {
+                specs: '../../test/js/spec/*.js'
+            }
+        },
+        cssmin: {
+            combine: {
+
+
+                files: {
+                    '../../css/lunchosars.min.css': [
+                        '../../css/bootstrap.css',
+                        '../../css/bootstrap-theme.css',
+                        '../../themes/default/style.css']
+                }
+            }
+        },
+        concat: {
+            options: {
+                separator: ';'
+            },
+            libs: {
+                src: [
+                    '../bower_components/angular/angular.js',
+                    '../bower_components/angular-route/angular-route.js',
+                    '../bower_components/jquery/dist/jquery.js',
+                    '../bower_components/bootstrap/dist/bootstrap.js'
+                ],
+                dest: '../dist/lib-bundle.js'
+            },
+            app: {
+                src: [
+                    '../lunchosars/app.js',
+                    '../lunchosars/controllers/*.js',
+                ],
+                dest: '../dist/lunchosars.js'
+            }
+        },
+        watch: {
+            scripts: {
+                files: ['../lunchosars/*.js', '../lunchosars/controllers/*.js', '../../css/*.css', '../../themes/default/style.css'],
+                tasks: ['concat:app', 'uglify:app'],
+                options: {
+                    spawn: false
+                }
+            }
+        }
+    });
+
+    // Load the plugin that provides the "uglify" task.
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+    // Default task(s).
+    grunt.registerTask('default', ['cssmin', 'concat', 'uglify' ]);
+
+};
+            </code></pre>
+                        </section>
+            <section>
+                        <h2>GulpJS</h2>
+                        <p><a href="http://gulpjs.com">http://gulpjs.com</a></p>
+                        <p><img src="images/gulp.png"></p>
+                        </section>
+            <section>
+                        <h2>Sample Gulp File (58 lines)</h2>
+                <pre><code contenteditable>
+var gulp = require('gulp'),
+        sass = require('gulp-sass'),
+        rename = require('gulp-rename');
+
+// Include Our Plugins
+var jshint = require('gulp-jshint');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+
+var scripts = ['../lunchosaurs/*.js', '../lunchosaurs/**/*.js'];
+var scss = ['../../sass/*.scss'];
+var libs = ['../bower_components/angular/angular.js',
+    '../bower_components/angular-route/angular-route.js',
+    '../bower_components/jquery/dist/jquery.js',
+    '../bower_components/bootstrap/dist/bootstrap.js'];
+
+// Lint Task
+gulp.task('lint', function () {
+    return gulp.src(scripts)
+            .pipe(jshint())
+            .pipe(jshint.reporter('default'));
+});
+
+gulp.task('styles', function () {
+    return gulp.src(scss)
+            .pipe(sass({ style: 'expanded' }))
+            .pipe(gulp.dest('../../css'));
+});
+
+// Concatenate & Minify JS - LIBRARIES
+gulp.task('libs', function () {
+    return gulp.src(libs)
+            .pipe(concat('libs-all.js'))
+            .pipe(gulp.dest('../dist'))
+            .pipe(rename('libs-all.min.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest('../dist'))
+
+            ;
+});
+
+// Concatenate & Minify JS -- APP
+gulp.task('appscripts', function () {
+    return gulp.src(scripts)
+            .pipe(concat('lunchosaurs.js'))
+            .pipe(gulp.dest('../dist'))
+            ;
+});
+
+// Watch Files For Changes
+gulp.task('watch', function () {
+    gulp.watch(scripts, ['lint', 'appscripts']);
+    gulp.watch(scss, ['styles']);
+});
+
+// Default Task
+gulp.task('default', ['lint', 'libs', 'appscripts', 'styles', 'watch']);
+                </code></pre>
+                        </section>
+        </section>
+        <section><section>
+            <h1>Other Cool Stuff</h1>
+        </section>
+            <section>
+                        <h2>Bower</h2>
+                        <p><a href="http://bower.io">http://bower.io</a></p>
+                        <p><img src="images/bower.png"></p>
+                    </section>
+            <section>
+                        <h2>Yeoman</h2>
+                        <p><a href="http://yeoman.io">http://yeoman.io</a></p>
+                        <p><img src="images/yeoman.png"></p>
+                    </section>
+            <section>
+                        <h2>PhantomJS</h2>
+                        <p><a href="http://phantomjs.org/">http://phantomjs.org</a></p>
+                        <p><img src="images/phantom.png"></p>
+                    </section>
+        <section>
+            <h2>CasperJS</h2>
+            <p><a href="http://casperjs.org/">http://casperjs.org</a></p>
+            <p><img src="images/casper.png"></p>
+        </section>
+            <section>
+                        <h2>PhantomCSS</h2>
+                        <p><a href="https://github.com/Huddle/PhantomCSS">https://github.com/Huddle/PhantomCSS</a></p>
+                        <p><img src="images/phantomcss.png"></p>
+                    </section>
+        </section>
+
+        <section>
+            <h1>THE END</h1>
+
+            <h3>spreston@icct.com / @scottpreston</h3>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            { src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
