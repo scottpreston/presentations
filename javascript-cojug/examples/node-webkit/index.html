@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1>Hello World!</h1>
+<p><a href="webcam.html">webcam</a></p>
+<button onclick="foo()">click me</button>
+<button onclick="readDB()">read db</button>
+<button onclick="window.close()">close me</button>
+<script>
+    var i = 0;
+
+    // In the following line, you should include the prefixes of implementations you want to test.
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+    // DON'T use "var indexedDB = ..." if you're not in a function.
+    // Moreover, you may need references to some window.IDB* objects:
+    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+    // (Mozilla has never prefixed these objects, so we don't need window.mozIDB*)
+
+    var db;
+
+    databaseOpen(function () {
+        alert("The database has been opened");
+    });
+
+    function databaseOpen(callback) {
+        // Open a database, specify the name and version
+        var version = 1;
+        var request = indexedDB.open('todos', version);
+
+        // Run migrations if necessary
+        request.onupgradeneeded = function (e) {
+            db = e.target.result;
+            e.target.transaction.onerror = databaseError;
+            db.createObjectStore('todo', { keyPath: 'timeStamp' });
+        };
+
+
+        request.onsuccess = function (e) {
+            db = e.target.result;
+            callback();
+        };
+        request.onerror = databaseError;
+    }
+
+    function databaseTodosAdd(text, callback) {
+        var transaction = db.transaction(['todo'], 'readwrite');
+        var store = transaction.objectStore('todo');
+        var request = store.put({
+            text: text,
+            timeStamp: Date.now()
+        });
+
+        transaction.oncomplete = function (e) {
+            callback();
+        };
+
+        request.onerror = databaseError;
+    }
+
+    function databaseTodosGet(callback) {
+        var transaction = db.transaction(['todo'], 'readonly');
+        var store = transaction.objectStore('todo');
+
+        // Get everything in the store
+        var keyRange = IDBKeyRange.lowerBound(0);
+        var cursorRequest = store.openCursor(keyRange);
+
+        // This fires once per row in the store. So, for simplicity,
+        // collect the data in an array (data), and pass it in the
+        // callback in one go.
+        var data = [];
+        cursorRequest.onsuccess = function (e) {
+            var result = e.target.result;
+
+            // If there's data, add it to array
+            if (result) {
+                data.push(result.value);
+                result.continue();
+
+                // Reach the end of the data
+            } else {
+                callback(data);
+            }
+        };
+    }
+
+    function databaseError(e) {
+        console.error('An IndexedDB error has occurred', e);
+    }
+
+    function foo() {
+        i++;
+        updateDB(i);
+        //alert(i);
+    }
+
+    function createDB() {
+
+
+    }
+
+    function readDB() {
+
+        databaseTodosGet(function (todos) {
+            var html = '';
+            todos.forEach(function (todo) {
+                html += todo.text + ", ";
+            });
+            alert(html);
+        })
+    }
+
+
+    function updateDB(item) {
+
+        databaseTodosAdd("todo" + item, function () {
+            alert('added')
+        });
+
+    }
+
+    createDB();
+
+
+</script>
+</body>
+</html>

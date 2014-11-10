@@ -94,7 +94,7 @@ var fooo = {
         </section>
         <section>
             <h2>More Info on JS Object</h2>
-            <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype</a></p>
+            <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</a></p>
         </section>
         <section>
         <h2>A Note On Scope</h2>
@@ -218,12 +218,10 @@ var Module = (function () {
 &lt;script src="js/script2.js" type="application/javascript"&gt;&lt;/script&gt;
 &lt;script src="js/script3.js" type="application/javascript"&gt;&lt;/script&gt;
 </code></pre>
-     </section>
-            <section>
             <p>Including The Library</p>
             <pre><code contenteditable>&lt;script data-main="scripts/main" src="scripts/require.js"&gt;&lt;/script&gt;
-</code></pre>
-        </section>
+            </code></pre>
+     </section>
             <section>
             <p>Defining Modules</p>
             <pre><code contenteditable>define(["./cart", "./inventory"], function(cart, inventory) {
@@ -247,7 +245,7 @@ var Module = (function () {
 });
 </code></pre>
             </section>
-        <section><h2>Require/AMD Questions?</h2></section>
+
         <section>
             <h2>Handlebars</h2>
             <p><a href="http://handlebarsjs.com">http://handlebarsjs.com</a></p>
@@ -310,7 +308,8 @@ var Module = (function () {
             </ul>
             </section>
             <section>
-                <h2>NPM - Node Package Manager</h2>
+                <h2>NPM</h2>
+                <p>Node Package Manager</p>
                 <pre><code contenteditable>npm install serialport -g // globally
 npm install serialport --save-dev // locally
 </code></pre>
@@ -465,14 +464,26 @@ app.listen(5000);</code></pre>
             </ul>
         </section>
         <section>
-            <h2>PhantomJS Sample</h2>
-
+            <h2>PhantomJS QuickStart</h2>
             <pre>
-<code contenteditable>
-var page = require('webpage').create();
-page.open('http://www.phantomjs.org/', function (status) {
-console.log('Loading a web page');
-phantom.exit();
+<code contenteditable>var page = require('webpage').create();
+    page.open('http://www.phantomjs.org/', function (status) {
+    console.log('Loading a web page');
+    phantom.exit();
+});
+</code></pre>
+        </section>
+        <section>
+            <h2>PhantomJS Twitter Scrape</h2>
+            <pre>
+<code contenteditable>var page = require('webpage').create();
+page.open(encodeURI("https://mobile.twitter.com/icctalk"), function (status) {
+    // Check for page load success
+    var followers = page.evaluate(function () {
+        return document.querySelector('div.statnum').innerText;
+    });
+    console.log('you have ' + followers + ' followers..');
+    phantom.exit();
 });
 </code></pre>
         </section>
@@ -483,19 +494,83 @@ phantom.exit();
             <p><a href="http://casperjs.org/">http://casperjs.org</a></p>
             <p><img src="images/casper.png"></p>
         </section>
-            <section>
-                        <h2>PhantomCSS</h2>
-                        <p><a href="https://github.com/Huddle/PhantomCSS">https://github.com/Huddle/PhantomCSS</a></p>
-                        <p><img src="images/phantomcss.png"></p>
-                    </section>
+        <section>
+            <h2>CasperJS QuickStart</h2>
+            <pre>
+<code contenteditable>var casper = require('casper').create();
+casper.start('http://casperjs.org/', function() {
+    this.echo(this.getTitle());
+});
+
+casper.thenOpen('http://phantomjs.org', function() {
+    this.echo(this.getTitle());
+});
+casper.run();
+</code></pre>
+        </section>
+        <section>
+            <h2>CasperJS Image Capture</h2>
+            <pre>
+<code contenteditable>var casper = require('casper').create();
+casper.start();
+var viewports = [
+    {name: 'normal', width: 1024, height: 768},
+    {name: 'iphone', width: 320, height: 480}
+];
+casper.each(viewports, function(casper, viewport) {
+    casper.then(function() {
+        casper.viewport(viewport.width, viewport.height);
+    });
+    casper.thenOpen('http://casperjs.org/', function () {
+        this.capture('casperjs-' + viewport.name + '.png');
+    });
+});
+casper.run();
+</code></pre>
         </section>
 
         <section>
-            <h1>THE END</h1>
-
-            <h3>spreston@icct.com / @scottpreston</h3>
+        <h2>PhantomCSS</h2>
+        <p><a href="https://github.com/Huddle/PhantomCSS">https://github.com/Huddle/PhantomCSS</a></p>
+        <p><img src="images/phantomcss.png"></p>
         </section>
 
+            <section>
+                <h2>Node WebKit</h2>
+                <p><a href="https://github.com/rogerwang/node-webkit">https://github.com/rogerwang/node-webkit</a></p>
+                <p><img src="images/nodewebkit.png"></p>
+            </section>
+            <section>
+                <h2>Sample Config Image Capture</h2>
+            <pre>
+<code contenteditable>{
+    "main": "index.html",
+    "name": "nw-demo",
+    "description": "demo app of node-webkit",
+    "version": "0.1.0",
+    "keywords": [ "demo", "node-webkit" ],
+    "window": {
+        "title": "node-webkit demo",
+        "toolbar": true,
+        "frame": false,
+        "width": 800,
+        "height": 500,
+        "position": "mouse",
+        "min_width": 400,
+        "min_height": 200,
+        "max_width": 800,
+        "max_height": 600
+        },
+    "webkit": {
+    "plugin": true
+    }
+}
+</code></pre>
+            </section>
+        <section>
+            <h1>DEMO TIME</h1>
+            <h3>spreston@icct.com / @scottpreston</h3>
+        </section>
     </div>
 
 </div>
