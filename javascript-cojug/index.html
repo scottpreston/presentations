@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>JavaScript Cornucopia</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Scott Preston">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h2>JavaScript Cornucopia</h2>
+            <p>Created by <a href="http://scottpreston.com">Scott Preston</a> / <a
+                        href="http://twitter.com/scottpreston">@scottpreston</a>
+            </p>
+        </section>
+        <section>
+            <h2>About Me</h2>
+            <ul>
+                <li>Practice Lead <a href="http://icctechnology.com/">ICC</a> - JavaScript/Grails/Mobile</li>
+                <li>Love JavaScript</li>
+                <li>Robots &amp; Smart Home Running in JS</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Overview</h2>
+                <ul>
+                    <li>Part 1. Outline / Theory JS - <a href="https://github.com/scottpreston/presentations">https://github.com/scottpreston/presentations</a></li>
+                    <li>Part 2. Robot Demo - <a href="https://github.com/scottpreston/feynman-jr">https://github.com/scottpreston/feynman-jr</a></li>
+                </ul>
+        </section>
+        <section>
+            <h2>Reveal.JS</h2>
+            <p>Presentation written using a JS Library, found here: <a href="https://github.com/hakimel/reveal.js/">https://github.com/hakimel/reveal.js</a></p>
+        </section>
+        <section>
+            <h2>The Fundementals</h2>
+            <ul>
+                <li>JS Objects</li>
+                <li>Scoping</li>
+                <li>Callbacks &amp; Async</li>
+            </ul>
+        </section>
+        <section>
+        <h2>Object Examples</h2>
+<pre>
+<code contenteditable>var a = {}; // easiest object ever
+var b = new Object(); // js for java developers
+
+function foo() {
+    this.bar = function() {};
+}; // functions are objects too
+
+foo.prototype.barbar = function() {}; 
+
+var fooo = { 
+    bar: function() {}
+}; // literal
+</code></pre>
+        </section>
+        <section>
+            <h2>More Info on JS Object</h2>
+            <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype</a></p>
+        </section>
+        <section>
+        <h2>A Note On Scope</h2>
+        <ul>
+            <li>Global Scope</li>
+            <li>Local (functional) Scope</li>
+            <li><i>this</i> - Keyword</li>
+        </ul>
+        </section>
+        <section>
+            <h2>Global Scope</h2>
+<pre><code contenteditable>&lt;script&gt;
+    var a = 123;
+    function foo(str) {
+        alert(str);
+    }
+    foo(a);
+&lt;/script&gt;
+</code></pre>
+            </section>
+        <section>
+            <h2>Function Scope</h2>
+<pre><code contenteditable>&lt;script&gt;
+    var a = 123;
+    function foo(str) {
+        var newString = str + "!!!";
+        alert(newString);
+    }
+    foo(a);
+&lt;/script&gt;
+</code></pre>
+        </section>
+        <section>
+            <h2>Function Scope with <i>this</i></h2>
+<pre><code contenteditable>&lt;script&gt;
+    var a = 123;
+    function foo(str) {
+        var self = this;
+        this.newString = str + "!!!";
+        this.popup = function() {
+            alert(this.newString); // WILL THIS WORK?
+            alert(self.newString); // OR THIS?
+        }
+    }
+    var f = new foo(a);
+    foo.popup();
+&lt;/script&gt;
+</code></pre>
+        </section>
+        <section>
+        <h2>Immediate Anonymous Functions </h2>
+        <p>Have you heard of these?</p>
+        </section>
+        <section>
+            <h2>Anonymous Function Example</h2>
+            <p>They look like normal functions but...</p>
+            <pre><code contenteditable>function hello() {
+    alert('hi all!');
+}(); // two added parens cause immediate execution
+</code></pre>
+        </section><section>
+<h2>Note on Convention</h2>
+<pre><code contenteditable>
+(function hello() {
+    alert('hi all!');
+})(); // two added parens cause immediate execution
+            </code></pre>
+            </section>
+            <section>
+            <h2>Modules</h2>
+<pre><code contenteditable>
+var Module = (function () {
+    alert('hi all!');
+})();
+
+var Module = (function () {
+    var privateMethod1 = function() {};
+    var privateMethod2 = function() {};
+    return {
+        publicMethod: function() {
+            // ...
+        }
+    }
+})();
+</code></pre>
+    </section>
+    <section>
+        <h2>Modules Everywhere</h2>
+<pre><code contenteditable>
+var Module = (function () {
+    alert('hi all!');
+})();
+
+// or jQuery Pattern?
+
+(function () {
+    var m = function() {
+        alert('hi all!');
+    };
+    window.Module = m;
+    window.jQuery = window.$ = m;
+})();
+
+</code></pre>
+    </section>
+        <section>
+            <h1>Libraries</h1>
+        </section>
+    <section>
+    <h2>AMD / RequireJS</h2>
+        <p><a href="http://requirejs.org">http://requirejs.org</a></p>
+        <p>A.M.D. - Asynchronous Module Definition</p>
+        <p>Dynamically appends &lt;script&gt; elements to DOM.</p>
+        <p><img src="images/requirejs.png"></p>
+        </section>
+        <section>
+        <h2>How to load JavaScript in the 90's</h2>
+        <p>Who Still Does This?</p>
+<pre><code contenteditable>&lt;script src="js/jquery.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script2.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script3.js" type="application/javascript"&gt;&lt;/script&gt;
+</code></pre>
+     </section>
+            <section>
+            <p>Including The Library</p>
+            <pre><code contenteditable>&lt;script data-main="scripts/main" src="scripts/require.js"&gt;&lt;/script&gt;
+</code></pre>
+        </section>
+            <section>
+            <p>Defining Modules</p>
+            <pre><code contenteditable>define(["./cart", "./inventory"], function(cart, inventory) {
+//return an object to define the "my/shirt" module.
+    return {
+        color: "blue",
+        size: "large",
+        addToCart: function() {
+            inventory.decrement(this);
+            cart.add(this);
+        }
+    }
+});
+</code></pre>
+            </section>
+            <section>
+            <p>Requiring Modules</p>
+            <pre><code contenteditable>require(["one", "two", "three"], function (one, two, three) {
+    var o = new one();
+    // do something
+});
+</code></pre>
+            </section>
+        <section><h2>Require/AMD Questions?</h2></section>
+        <section>
+            <h2>Handlebars</h2>
+            <p><a href="http://handlebarsjs.com">http://handlebarsjs.com</a></p>
+            <p><img src="images/handlebars.png"></p>
+        </section>
+            <section>
+                <h2>Sample Handlebars Template</h2>
+                <pre><code contenteditable>
+&lt;script id="entry-template" type="text/x-handlebars-template"&gt;
+    &lt;div class="entry"&gt;
+        &lt;h1&gt;{{title}}&lt;/h1&gt;  &lt;!---- This Line --&gt;
+        &lt;div class="body"&gt;
+        {{body}}            &lt;!---- This Line --&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/script&gt;
+&lt;script&gt;
+    var source   = $("#entry-template").html();
+    var template = Handlebars.compile(source);
+    var context = {title: "My New Post", body: "This is my first post!"}
+    var html    = template(context);
+&lt;/script&gt;
+    </code></pre>
+    </section>
+         <section>
+            <h2>Underscore or _</h2>
+            <p><a href="http://underscorejs.org">http://underscorejs.org</a></p>
+            <p><img src="images/underscore.png"></p>
+        </section>
+            <section>
+                        <h2>D3</h2>
+                        <p>Data. Driven. Design.</p>
+                        <p><a href="http://d3js.org">http://d3js.org</a></p>
+                        <p><a href="https://github.com/mbostock/d3/wiki/Gallery">https://github.com/mbostock/d3/wiki/Gallery</a></p>
+                        <p><img src="images/d3.png"></p>
+                    </section>
+            <section>
+                        <h2>Fabric JS</h2>
+                        <p>Working with Canvas</p>
+                        <p><a href="http://fabricjs.com">http://fabricjs.com</a></p>
+                        <p><img src="images/fabricjs.png"></p>
+                    </section>
+            <section>
+                        <h2>Canvas JS</h2>
+                        <p>More Working With Canvas</p>
+                        <p><a href="http://canvasjs.com">http://canvasjs.com</a></p>
+                        <p><img src="images/canvasjs.png"></p>
+                    </section>
+            <section>
+            <h2>NodeJS</h2>
+            <p>Server Side JavaScript</p>
+            <p><a href="http://nodejs.org/">http://nodejs.org/</a></p>
+            <p><img src="images/node.png"></p>
+            </section>
+            <section><h2>Why Server Side JS?</h2>
+            <ul>
+                <li>Non-Blocking IO</li>
+                <li>Tooling - Builds, Automating Test, Etc</li>
+                <li>Great For Robots!</li>
+            </ul>
+            </section>
+            <section>
+                <h2>NPM - Node Package Manager</h2>
+                <pre><code contenteditable>npm install serialport -g // globally
+npm install serialport --save-dev // locally
+</code></pre>
+            </section>
+            <section>
+            <h2>JS Build Systems</h2>
+            <p>Remember This?</p>
+                <pre><code contenteditable>&lt;script src="js/jquery.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script2.js" type="application/javascript"&gt;&lt;/script&gt;
+&lt;script src="js/script3.js" type="application/javascript"&gt;&lt;/script&gt;
+</code></pre>
+            </section>
+            <section>
+            <h2>GruntJS</h2>
+            <p><a href="http://gruntjs.com">http://gruntjs.com</a></p>
+            <p><img src="images/grunt.png"></p>
+            </section>
+            <section>
+            <h2>GulpJS</h2>
+                <p><a href="http://gulpjs.com">http://gulpjs.com</a></p>
+                <p><img src="images/gulp.png"></p>
+            </section>
+            <section>
+<h2>Sample Gulp File</h2>
+                <pre><code contenteditable>
+var gulp = require('gulp'),
+        sass = require('gulp-sass'),
+        rename = require('gulp-rename');
+
+// Include Our Plugins
+var jshint = require('gulp-jshint');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+
+var scripts = ['../lunchosaurs/*.js', '../lunchosaurs/**/*.js'];
+var scss = ['../../sass/*.scss'];
+var libs = ['../bower_components/angular/angular.js',
+    '../bower_components/angular-route/angular-route.js',
+    '../bower_components/jquery/dist/jquery.js',
+    '../bower_components/bootstrap/dist/bootstrap.js'];
+
+// Lint Task
+gulp.task('lint', function () {
+    return gulp.src(scripts)
+            .pipe(jshint())
+            .pipe(jshint.reporter('default'));
+});
+
+gulp.task('styles', function () {
+    return gulp.src(scss)
+            .pipe(sass({ style: 'expanded' }))
+            .pipe(gulp.dest('../../css'));
+});
+
+// Concatenate & Minify JS - LIBRARIES
+gulp.task('libs', function () {
+    return gulp.src(libs)
+            .pipe(concat('libs-all.js'))
+            .pipe(gulp.dest('../dist'))
+            .pipe(rename('libs-all.min.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest('../dist'));
+});
+
+// Concatenate & Minify JS -- APP
+gulp.task('appscripts', function () {
+    return gulp.src(scripts)
+            .pipe(concat('lunchosaurs.js'))
+            .pipe(gulp.dest('../dist'));
+});
+
+// Watch Files For Changes
+gulp.task('watch', function () {
+    gulp.watch(scripts, ['lint', 'appscripts']);
+    gulp.watch(scss, ['styles']);
+});
+
+// Default Task
+gulp.task('default', ['lint', 'libs', 'appscripts', 'styles', 'watch']);
+ </code></pre>
+</section>
+            <section>
+                        <h2>Bower</h2>
+                        <p><a href="http://bower.io">http://bower.io</a></p>
+                        <p><img src="images/bower.png"></p>
+                    </section>
+            <section>
+                <h2>Bower Sample</h2>
+                <p>npm install bower -g</p>
+                <p>include <strong>bower.json</strong> in a directory and type "bower install"</p>
+<pre><code contenteditable>{
+    "name": "scottpreston",
+    "version": "0.0.1",
+    "dependencies": {
+        "jquery": "latest",
+        "bootstrap": "latest",
+        "underscore": "latest",
+        "jasmine": "latest",
+        "handlebars.js": "latest"
+    },
+    "private": true
+} </code></pre>
+                <p>or "bower install jquery"</p>
+            </section>
+            <section>
+                        <h2>Yeoman</h2>
+                        <p><a href="http://yeoman.io">http://yeoman.io</a></p>
+                        <p><img src="images/yeoman.png"></p>
+                    </section>
+        <section>
+            <h2>Yeoman Sample</h2>
+            <p>Yeoman generators might use Grunt!</p>
+            <pre><code contenteditable>
+npm install -g generator-gulp-angular
+mkdir my-new-project
+cd my-new-project
+yo gulp-angular [app-name]
+            </code></pre>
+        </section>
+        <section>
+            <h2>ExpressJS</h2>
+            <p><a href="http://expressjs.com/">http://expressjs.com/</a></p>
+            <p><img src="images/express.png"></p>
+        </section>
+        <section>
+        <h2>ExpressJS Sample</h2>
+        <p>Simple Static Web Server</p>
+        <p>Install</p>
+<pre><code contenteditable>npm install -g express serve-static</code></pre>
+            <p>Sample Code</p>
+<pre><code contenteditable>var connect = require('connect'),
+serveStatic = require('serve-static');
+var app = connect();
+app.use(serveStatic("../"));
+app.listen(5000);</code></pre>
+        </section>
+         <section>
+        <h2>PhantomJS</h2>
+                        <p><a href="http://phantomjs.org/">http://phantomjs.org</a></p>
+                        <p><img src="images/phantom.png"></p>
+                    </section>
+        <section>
+            <h2>PhantomJS Continued</h2>
+            <ul>
+                <li>Headless Web-Kit</li>
+                <li>Browser that runs via command line and executes JavaScript</li>
+                <li>Can be driven from Selenium WebDriver</li>
+                <li>Stand-Alone Binary (No NodeJS Required)</li>
+                <li>Uses node conventions</li>
+            </ul>
+        </section>
+        <section>
+            <h2>PhantomJS Sample</h2>
+
+            <pre>
+<code contenteditable>
+var page = require('webpage').create();
+page.open('http://www.phantomjs.org/', function (status) {
+console.log('Loading a web page');
+phantom.exit();
+});
+</code></pre>
+        </section>
+
+
+        <section>
+            <h2>CasperJS</h2>
+            <p><a href="http://casperjs.org/">http://casperjs.org</a></p>
+            <p><img src="images/casper.png"></p>
+        </section>
+            <section>
+                        <h2>PhantomCSS</h2>
+                        <p><a href="https://github.com/Huddle/PhantomCSS">https://github.com/Huddle/PhantomCSS</a></p>
+                        <p><img src="images/phantomcss.png"></p>
+                    </section>
+        </section>
+
+        <section>
+            <h1>THE END</h1>
+
+            <h3>spreston@icct.com / @scottpreston</h3>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            { src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
