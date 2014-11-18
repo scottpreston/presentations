@@ -19,6 +19,13 @@
 
     <!-- For syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+ .footer {
+    font-size: 0.66em;
+    position:absolute;
+    bottom: 50px;
+ }
+    </style>
 
     <!-- If the query includes 'print-pdf', include the PDF print sheet -->
     <script>
@@ -59,12 +66,197 @@
                 <li>For Fun: Build Robots &amp; Smart Home Running</li>
             </ul>
         </section>
+        <section>
+            <h2>This Presentation</h2>
+            <p><a href=" http://github.com/scottpreston/presentations/node-webkit">http://github.com/scottpreston/presentations/node-webkit</a></p>
+        </section>
+        <section>
+            <h2>Installation</h2>
+            <ul>
+                <li>Download: <a href="https://github.com/rogerwang/node-webkit">https://github.com/rogerwang/node-webkit</a></li>
+                <li>Copy nw.app, to /Applications</li>
+                <li>update .bash_profile</li>
+            </ul>
+            <pre>alias nw="/Applications/node-webkit.app/Contents/MacOS/node-webkit"</pre>
+        </section>
+        <section>
+            <h2>Quickstart</h2>
+            
+        </section>
+        <section>
+            <h2>Quickstart - index.html</h2>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello World!&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello World!&lt;/h1&gt;
+&lt;button onclick="foo()"&gt;click me&lt;/button&gt;
+&lt;button onclick="window.close()"&gt;close me&lt;/button&gt;
+&lt;script&gt;
+    function foo() {
+        alert('this is a test!');
+    }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+        <section>
+        <h2>Quickstart - package.json</h2>
+<pre><code>{
+    "main": "index.html",
+    "name": "nw-demo",
+    "description": "demo app of node-webkit",
+    "version": "0.1.0",
+    "keywords": [ "demo", "node-webkit" ],
+    "window": {
+        "title": "node-webkit demo",
+        "toolbar": true,
+        "frame": false,
+        "width": 800,
+        "height": 600,
+        "position": "mouse",
+        "min_width": 400,
+        "min_height": 200,
+        "max_width": 800,
+        "max_height": 600
+    },
+    "webkit": {
+        "plugin": true
+    }
+}</pre></code>
+        </section>
+        <section>
+            <h2>package.json</h2>
+            <ul>
+                <li>main - this is the launch HTML page.</li>
+                <li>name - this is the name</li>
+                <li>window - object (to be defined in next 2 slides)</li>
+                <li>webkit - object (to be defined in 3 slides)</li>
+                <li>chromium-args - command line arguments</li>
+                <li>js-flags - arguments passed to JS engine</li>
+                <li>inject-js-start/inject-js-end</li>
+            </ul>
+        </section>
+        <section>
+            <h2>package.json - windows</h2>
+            <ul>
+                <li>title - (string) default window title</li>
+                <li>width/height - (int) intial height &amp; widths</li>
+                <li>toolbar - (boolean) -showing toolbar</li>
+                <li>icon - path to window's icon</li>
+                <li>position - (null, center, mouse) where window will be placed</li>
+                <li>min_width/max_width/min_height/max_height</li>
+                <li>as_desktop - (boolean) show desktop background under x11</li>
+               </ul>
+        </section>        
+        <section>
+            <h2>package.json - windows cont</h2>
+            <ul>
+                <li>resizable - (boolean)</li>
+                <li>always-on-top - (int) top of other windows</li>
+                <li>fullscreen - (boolean) available or not</li>
+                <li>show_in_taskbar - (boolean) shown in taskbar or dock</li>
+                <li>frame - (boolean) make window frameless</li>
+                <li>show - (boolean) hidden on startup</li>
+                <li>kiosk - (true/false) full screen and prevent from leaving app</li>
+               </ul>
+        </section>    
+        <section>
+            <h2>package.json - webkit</h2>
+            <ul>
+                <li>plugin - load external browser plugins like Flash.</li>
+                <li>java - load applets</li>
+                <li>page-cache - to enable page cache</li>
+            </ul>
+        </section>
+        <section>
+            <h2>package.json - other fields</h2>
+            <ul>
+                <li>description - this is the launch HTML page.</li>
+                <li>version - this is the name</li>
+                <li>keywords - object (to be defined in next slide)</li>
+                <li>maintainers/contributers</li>
+                <li>bugs - url for submitting bugs can be http or mailto</li>
+                <li>licenses</li>
+                <li>repositories</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Build OSX</h3>
+            <pre>npm install node-webkit-builder</pre>
+            <h3>Build Windows</h3>
+            <pre>copy /b nw.exe+app.nw app.exe
+Ship nw.pak and icudt.dll with nw.exe</pre>
+            
+            <h3>Build Linux</h3>
+            <pre>cat /usr/bin/nw app.nw > app && chmod +x app 
+Ship nw and libffmpeg.so</pre>
+            
+        </section>
+        <section>
+            <h2>Building Example</h2>
+            <p>&nbsp;</p>
+            <pre>#compile js source code?
+nwsnapshot --extra_code source.js snapshot.bin</pre>
+        </section>
+        <section>
+            <h2>API - Window</h2>
+            <p><a href="https://github.com/rogerwang/node-webkit/wiki/Window">https://github.com/rogerwang/node-webkit/wiki/Window</a></p>
+            <ul>
+                <li>open(url) - opens a URL</li>
+                <li>showDevTools shows the dev tools</li>
+                <li>Events - document-start, loading, loaded, etc.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>API - Menus</h2>
+            <p><a href="https://github.com/rogerwang/node-webkit/wiki/Menu">https://github.com/rogerwang/node-webkit/wiki/Menu</a></p>
+            <ul>
+                <li>Menu.createMacBuiltin(appname, options) - adds default menus to app</li>
+                <li>Menu.items[x].click - attaches event listener to this menu item</li>
+                <li>Menu.popup - pop-up menu</li>
+            </ul>
+        </section>
+        <section>
+            <h2>API - Platform Services</h2>
+          
+            <ul>
+                <li>App - Proxy Configuration, crashDump, Origin Policy, argv (command line args)</li>
+                <li>Clipboard - Cut/Paste</li>
+                <li>Tray - Status Item, Status Icon, and System Tray</li>
+                <li>File Dialogs - More than &lt;input type="file"&gt;</li>
+                <li>Shell - Desktop related jobs.</li>
+                <li>Handling files and arguments</li>
+                <li>Screen - OS Level Screen Events</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Storage</h2>
+             <ul>
+                <li>Web SQL - Deprecated but it still works</li>
+                <li>IndexDB - NOSQL successory to WebSQL</li>
+                <li>PouchDB - Embedded inspired by CouchDB</li>
+                <li>EJDB - Embedded JSON Data Engine</li>
+                <li>NeDB - Node Embedded Database</li>
+                <li>StoreDB - based on localStorage</li>
+                <li>Web Storage - localStorage, sessionStorage</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Lots of Examples</h2>
+        </section>
 
         <section>
-            <h1>DEMO TIME</h1>
-            <h3>spreston@icct.com / @scottpreston</h3>
+            <h2>Thanks &amp; Q/A</h2>
+            <p>spreston@icct.com / @scottpreston</p>
+<p><a href=" http://github.com/scottpreston/presentations/node-webkit">http://github.com/scottpreston/presentations/node-webkit</a></p>
         </section>
+
+    
     </div>
+
 
 </div>
 
