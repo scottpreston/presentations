@@ -10,18 +10,25 @@
     </style>
 </head>
 <body>
-<div class="container"><video autoplay id="vid" style="display:none;"></video></div>
-<div class="container"><canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas></div>
-<div id="motion"></div>
-<div class="clear"><button onclick="window.close()">close me</div>
+<video autoplay id="vid" style="display:none;"></video>
+<div class="container">
+    <canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+<div class="container">
+    <canvas id="canvas2" width="640" height="480" style="border:1px solid #d3d3d3;display:none;"></canvas>
+</div>
+<div class="clear">
+    <button onclick="window.close()">close me
+</div>
 <script type="text/javascript">
 
     var video = document.querySelector("#vid");
     var canvas = document.querySelector('#canvas');
+    var canvas2 = document.querySelector('#canvas2');
     var ctx = canvas.getContext('2d');
+    var ctx2 = canvas2.getContext('2d');
     var localMediaStream = null;
-    var fps = 1000; // capture 1 per second.
-
+    var fps = 1000 / 2;
 
     var onCameraFail = function (e) {
         alert('Your browser does not support this, download Chrome!');
@@ -37,74 +44,67 @@
 
     setInterval(function () {
         ctx.drawImage(video, 0, 0);
-        if (isMotion()) {
-            console.log('hit...');
-            document.querySelector("#motion").innerText = "motion";
-            setTimeout(function() {
-                document.querySelector("#motion").innerText = "";
-            }, 500);
-        } else {
-            console.log('no motion...')
-        }
+        makeGrey();
     }, fps);
 
-var previousImageData = [];
+    var imageData = null, oldImageData = [];
+    function makeGrey() {
+        var grays = [];
+        var meanX = 0, meanY = 0, meanCount = 0;
+        var imageData = ctx.getImageData(0, 0, 640, 480);
+        var newImageData = ctx2.createImageData(640, 480);
+        var data = imageData.data;
+        var newData = newImageData.data;
+        var counter = 0;
+        var summ = 0;
+        var diffPixels = [];
+        for (var x = 0; x < 640; x++) {
+            for (var y = 0; y < 480; y++) {
+                var offset = x * 4 + y * 4 * imageData.width;
+                var r = data[offset]
+                var g = data[offset + 1];
+                var b = data[offset + 2];
+                var a = data[offset + 3];
+                var gray = (r + g + b) / 3;
+                grays.push(gray);
+                newData[offset] = gray;
+                newData[offset + 1] = gray;
+                newData[offset + 2] = gray;
+                newData[offset + 3] = a;
+                if (oldImageData.length > 0) {
+                    var prevPixel = oldImageData[counter];
+                    var diff = Math.abs(gray - prevPixel);
+                    diffPixels.push(diff);
+                    if (x == 300 && y == 200) {
+                       // console.log({x: x, y: y, diff: diff});
+                    }
+                }
+                counter++;
+            }
+        }
 
-function isMotion() {
-    var motionHit = false;
-    var threshold = .20;
-    var summ = 0;
-    var imageData = ctx.getImageData(0, 0, 640, 480);
-    var greyData = getGrey(imageData);
-    if (greyData.length == 0) {
-        console.log("nodata");
-        return motionHit;
-    } else {
-        console.log(greyData.length);
-    }
-    if (previousImageData.length == 0) {
-        previousImageData = greyData;
-        console.log("setting previous image data");
-        return false;
-    } else {
-        for (var i = 0; i < greyData.length; i += 4) {
-            var curPixel = greyData[i];
-            var prevPixel = previousImageData[i];
-            var diff = Math.abs(curPixel - prevPixel);
-            if (diff > 25) {
+        for (var i=0; i < diffPixels.length; i++) {
+            if (diffPixels[i] > 25) {
                 summ++;
             }
         }
-        var totalPixels = greyData.length / 4;
-        if (summ > totalPixels * .05) {
-            motionHit = true;
+
+        if (summ > (diffPixels.length * .05)) {
             console.log("motion detected");
-        } else {
-            console.log(summ);
+            var imageData = canvas.toDataURL('image/jpeg').split(',')[1];
+            //var decodedImg = window.atob(imageData);
+            var img = new Buffer(imageData, 'base64');
+            var fs = require("fs");
+            fs.writeFileSync("snap" + new Date().getTime() + ".jpg", img);
+            console.log('file written...');
         }
-    }
-    previousImageData = greyData;
-    return motionHit;
-}
 
-function getGrey(imageData) {
-    var newImageData = ctx.createImageData(640, 480);
-    var data = imageData.data;
-    var newData = newImageData.data;
-    for (var i = 0; i < imageData.length; i += 4) {
-        var red = imageData[i]; // red
-        var green = imageData[i + 1]; // green
-        var blue = imageData[i + 2]; // blue
-        var alpha = imageData[i + 3];
-        var gray = (red + green + blue) / 3;
-        newData[i] = gray;
-        newData[i + 1] = gray;
-        newData[i + 2] = gray;
-        newData[i + 3] = alpha;
-    }
-    return newData;
-}
+        ctx2.putImageData(newImageData, 0, 0);
+        oldImageData = grays.slice(0);
 
+    }
+
+   
 </script>
 
 </body>
