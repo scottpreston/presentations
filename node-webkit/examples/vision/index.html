@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>vision example</title>
+    <style>
+    body {text-align: center;margin:0;padding:0;}
+    .container {with:50%;float:left;}
+    .clear {clear:both;}
+    </style>
+</head>
+<body>
+<video autoplay id="vid" style="display:none;"></video>
+<div class="container"><canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas></div>
+<div class="container"><canvas id="canvas2" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas></div>
+<div class="clear"><button onclick="window.close()">close me</div>
+<script type="text/javascript">
+
+    var video = document.querySelector("#vid");
+    var canvas = document.querySelector('#canvas');
+    var canvas2 = document.querySelector('#canvas2');
+    var ctx = canvas.getContext('2d');
+    var ctx2 = canvas2.getContext('2d');
+    var localMediaStream = null;
+    var fps = 1000/15;
+
+    var onCameraFail = function (e) {
+        alert('Your browser does not support this, download Chrome!');
+    };
+    var val = 255;
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    window.URL = window.URL || window.webkitURL;
+    navigator.getUserMedia({video: true}, function (stream) {
+        video.src = window.URL.createObjectURL(stream);
+        localMediaStream = stream;
+    }, onCameraFail);
+
+    setInterval(function () {
+        ctx.drawImage(video, 0, 0);
+        filterRed();
+    }, fps);
+
+function filterRed() {
+    var meanX = 0, meanY = 0, meanCount = 0;
+    var imageData = ctx.getImageData(0, 0, 640, 480);
+    var newImageData = ctx2.createImageData(640, 480);
+    var data = imageData.data;
+    var newData = newImageData.data;
+    for (var x = 0; x < 640; x++) {
+        for (var y = 0; y < 480; y++) {
+            var offset = x * 4 + y * 4 * imageData.width;
+            var xIdx = parseInt(x / 64);
+            var yIdx = parseInt(y / 48);
+            var r = data[offset]
+            var g = data[offset + 1];
+            var b = data[offset + 2];
+            var a = data[offset + 3];
+            var gray = (r + g + b) / 3;
+            if (filter(r, g, b)) {
+                newData[offset] = r;
+                newData[offset + 1] = g;
+                newData[offset + 2] = b;
+                newData[offset + 3] = a;
+                meanX = meanX + x;
+                meanY = meanY + y;
+                meanCount++;
+            } else { // make it white
+                newData[offset] = 255;
+                newData[offset + 1] = 255;
+                newData[offset + 2] = 255;
+                newData[offset + 3] = a;
+            }
+        }
+    }
+    ctx2.putImageData(newImageData, 0, 0);
+}
+
+function filter(r,g,b) {
+    return (r > g + 50 && r > b + 50);
+}
+
+</script>
+
+</body>
+</html>

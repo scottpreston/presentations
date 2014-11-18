@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Files!</title>
+</head>
+<body>
+<h1>Hello Files!</h1>
+<button onclick="foo()">click me</button>
+<button onclick="window.close()">close me</button>
+<script>
+   	var files = "";
+    function foo() {
+        alert(files);
+    }
+    var fs = require("fs");
+    fs.readdirSync("../../").forEach(function(file) {
+  		files += file + "\n";
+	});
+</script>
+</body>
+</html>
