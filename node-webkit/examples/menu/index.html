@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello World!</title>
+    <title>Hello Menus!</title>
 </head>
 <body>
-<h1>Hello World!</h1>
+<h1>Hello Menus!</h1>
 <button onclick="window.close()">close me</button>
 <script>
-var gui = require('nw.gui');
+    var gui = require('nw.gui');
 
-// Create menu
-var menu = new gui.Menu({
-    type:   'menubar'
-});
+    // Create menu
+    var menu = new gui.Menu({
+        type: 'menubar'
+    });
 
-// Needs Mac Built In?
-menu.createMacBuiltin('Sample App', {
-  hideEdit: true,
-  hideWindow: true
-});
+    // Needs Mac Built In?
+    menu.createMacBuiltin('Sample App', {
+        hideEdit: true,
+        hideWindow: true
+    });
 
-var sub1 = new gui.Menu();
-sub1.append(new gui.MenuItem({
-	label: 'Test1',
-	click: function() {
-  	alert('hi everyone');
-	}
-}));
+    var sub1 = new gui.Menu();
+    sub1.append(new gui.MenuItem({
+        label: 'Test1',
+        click: function () {
+            alert('hi everyone');
+        }
+    }));
 
-sub1.append(new gui.MenuItem({
-	label: 'Close',
-	click: function() {
-  	window.close();
-	}
-}));
+    sub1.append(new gui.MenuItem({
+        label: 'Close',
+        click: function () {
+            window.close();
+        }
+    }));
 
-// Append MenuItem as a Submenu
-menu.append(
-    new gui.MenuItem({
-        label: 'Click Me',
-        submenu: sub1
-    })
-);
+    // Append MenuItem as a Submenu
+    menu.append(
+            new gui.MenuItem({
+                label: 'Click Me',
+                submenu: sub1
+            })
+    );
 
-// Append Menu to Window
-gui.Window.get().menu = menu;
+    // Append Menu to Window
+    gui.Window.get().menu = menu;
 </script>
 </body>
 </html>

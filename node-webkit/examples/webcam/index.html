@@ -3,35 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>hello-webcam</title>
-    <style>
-    body {text-align: center;}
-    .container {with:50%;float:left;}
-    .clear {clear:both;}
-    </style>
 </head>
 <body>
-<div class="container"><video autoplay id="vid" style="display:none;"></video></div>
-<div class="container"><canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas></div>
-<div class="clear"><button onclick="window.close()">close me</div>
+<div class="container">
+    <video autoplay id="vid"></video>
+</div>
+<div class="container">
+    <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+<div class="clear">
+    <button onclick="window.close()">close me
+</div>
 <script type="text/javascript">
 
     var video = document.querySelector("#vid");
     var canvas = document.querySelector('#canvas');
     var ctx = canvas.getContext('2d');
     var localMediaStream = null;
-    var fps = 1000/15;
-
-    var onCameraFail = function (e) {
-        alert('Your browser does not support this, download Chrome!');
-    };
-    var val = 255;
+    var fps = 1000 / 15;
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL;
     navigator.getUserMedia({video: true}, function (stream) {
         video.src = window.URL.createObjectURL(stream);
         localMediaStream = stream;
-    }, onCameraFail);
+    }, function () {
+    });
 
     setInterval(function () {
         ctx.drawImage(video, 0, 0);

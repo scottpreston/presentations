@@ -2,49 +2,53 @@
 <html ng-app="phonecatApp">
 <head>
     <title>Hello World!</title>
-	<script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
 </head>
 <body>
 <h1>Hello Angular!</h1>
+
 <div ng-controller="PhoneListCtrl">
-	{{status}}
-	<h3>Phones</h3>
-	<ul>
-    	<li ng-repeat="phone in phones">
-      	<span>{{phone.name}}</span>
-      	<p>{{phone.snippet}}</p>
-    	</li>
-  	</ul>
-  <h3>Files</h3>
-  <ul>
-    	<li ng-repeat="file in files">
-      	<span>{{file.name}}</span>
-    	</li>
-  	</ul>
+    {{status}}
+    <h3>Phones</h3>
+    <ul>
+        <li ng-repeat="phone in phones">
+            <span>{{phone.name}}</span>
+
+            <p>{{phone.snippet}}</p>
+        </li>
+    </ul>
+    <h3>Files</h3>
+    <ul>
+        <li ng-repeat="file in files">
+            <span>{{file.name}}</span>
+        </li>
+    </ul>
 </div>
 <button onclick="window.close()">close me</button>
 <script>
-	var phonecatApp = angular.module('phonecatApp', []);
+    var phonecatApp = angular.module('phonecatApp', []);
     phonecatApp.controller('PhoneListCtrl', function ($scope) {
-    	$scope.status = "new";
-  		$scope.phones = [{'name': 'iPhone 5s','snippet': "Last Year's iPhone"},
-    		{'name': 'iPhone 6','snippet': "This year's iPhone"},
-    		{'name': 'iPhone 6+','snippet': "Larger version of this year's iPhone."}];
-    	$scope.status = "phones loaded";
-    	$scope.files = [];	
-    	var fs = require("fs");
-    	fs.readdir("../../", function(err,files){
-			$scope.update(files);
-    	});
-    	$scope.update = function(files) {
-			files.forEach(function(file) {
-  				$scope.files.push({"name":file});
-			});
-			console.log($scope.files);
-			$scope.status = "files loaded";
-			$scope.$apply();
-    	};
-	});	
+        $scope.status = "new";
+        $scope.phones = [
+            {'name': 'iPhone 5s', 'snippet': "Last Year's iPhone"},
+            {'name': 'iPhone 6', 'snippet': "This year's iPhone"},
+            {'name': 'iPhone 6+', 'snippet': "Larger version of this year's iPhone."}
+        ];
+        $scope.status = "phones loaded";
+        $scope.files = [];
+        var fs = require("fs");
+        fs.readdir("../../", function (err, files) {
+            $scope.update(files);
+        });
+        $scope.update = function (files) {
+            files.forEach(function (file) {
+                $scope.files.push({"name": file});
+            });
+            console.log($scope.files);
+            $scope.status = "files loaded";
+            $scope.$apply();
+        };
+    });
 </script>
 </body>
 </html>

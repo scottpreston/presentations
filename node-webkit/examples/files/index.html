@@ -8,14 +8,14 @@
 <button onclick="foo()">click me</button>
 <button onclick="window.close()">close me</button>
 <script>
-   	var files = "";
+    var files = "";
     function foo() {
         alert(files);
     }
     var fs = require("fs");
-    fs.readdirSync("../../").forEach(function(file) {
-  		files += file + "\n";
-	});
+    fs.readdirSync("../../").forEach(function (file) {
+        files += file + "\n";
+    });
 </script>
 </body>
 </html>

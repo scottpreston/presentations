@@ -3,19 +3,15 @@
 <head>
     <meta charset="utf-8">
     <title>hello-webcam</title>
-    <style>
-    body {text-align: center;}
-    .container {with:50%;float:left;}
-    .clear {clear:both;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="tmp.css">
 </head>
 <body>
 <video autoplay id="vid" style="display:none;"></video>
 <div class="container">
-    <canvas id="canvas" width="640" height="480" style="border:1px solid #d3d3d3;"></canvas>
+    <canvas id="canvas" width="640" height="480"></canvas>
 </div>
 <div class="container">
-    <canvas id="canvas2" width="640" height="480" style="border:1px solid #d3d3d3;display:none;"></canvas>
+    <canvas id="canvas2" width="640" height="480"></canvas>
 </div>
 <div class="clear">
     <button onclick="window.close()">close me
@@ -29,26 +25,21 @@
     var ctx2 = canvas2.getContext('2d');
     var localMediaStream = null;
     var fps = 1000 / 2;
-
-    var onCameraFail = function (e) {
-        alert('Your browser does not support this, download Chrome!');
-    };
-    var val = 255;
+    var imageData = null, oldImageData = [];
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL;
     navigator.getUserMedia({video: true}, function (stream) {
         video.src = window.URL.createObjectURL(stream);
         localMediaStream = stream;
-    }, onCameraFail);
+    }, function() {});
 
     setInterval(function () {
         ctx.drawImage(video, 0, 0);
-        makeGrey();
+        checkForMotion();
     }, fps);
 
-    var imageData = null, oldImageData = [];
-    function makeGrey() {
+    function checkForMotion() {
         var grays = [];
         var meanX = 0, meanY = 0, meanCount = 0;
         var imageData = ctx.getImageData(0, 0, 640, 480);
@@ -76,14 +67,14 @@
                     var diff = Math.abs(gray - prevPixel);
                     diffPixels.push(diff);
                     if (x == 300 && y == 200) {
-                       // console.log({x: x, y: y, diff: diff});
+                        // console.log({x: x, y: y, diff: diff});
                     }
                 }
                 counter++;
             }
         }
 
-        for (var i=0; i < diffPixels.length; i++) {
+        for (var i = 0; i < diffPixels.length; i++) {
             if (diffPixels[i] > 25) {
                 summ++;
             }
@@ -91,9 +82,8 @@
 
         if (summ > (diffPixels.length * .05)) {
             console.log("motion detected");
-            var imageData = canvas.toDataURL('image/jpeg').split(',')[1];
-            //var decodedImg = window.atob(imageData);
-            var img = new Buffer(imageData, 'base64');
+            var base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
+            var img = new Buffer(base64Image, 'base64');
             var fs = require("fs");
             fs.writeFileSync("snap" + new Date().getTime() + ".jpg", img);
             console.log('file written...');
@@ -104,7 +94,7 @@
 
     }
 
-   
+
 </script>
 
 </body>
