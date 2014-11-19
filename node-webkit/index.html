@@ -50,7 +50,8 @@
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
         <section>
-            <h2>Node Webkit</h2>
+            <h2>Node-Webkit</h2>
+            <p><img src="images/icon-node-webkit.png" border="0" style="border: 0px;width:25%;" alt="source http://oldgeeksguide.github.io/presentations/html5devconf2013/icon-node-webkit.png"></p>
             <p>Created by <a href="http://scottpreston.com">Scott Preston</a> / <a
                         href="http://twitter.com/scottpreston">@scottpreston</a>
             </p>
@@ -71,17 +72,50 @@
             <p><a href=" http://github.com/scottpreston/presentations/node-webkit">http://github.com/scottpreston/presentations/node-webkit</a></p>
         </section>
         <section>
+            <h2>What is node-webkit?</h2>
+        </section>
+        <section>
+            <h2>Who's worked with PhoneGap?</h2>
+        </section>
+        <section>
+            <h2>What's Node?</h2>
+            <p>It's a platform built on Chrome's V8 JavaScript engine.</p>
+        </section>
+        <section>
+            <h2>What's WebKit?</h2>
+            <p>It's the layout engine that powers Apple's Safari &amp; Google's Chrome web browsers.</p>
+        </section>
+        <section>
+            <h2>Node-Webkit</h2>
+            <p><img src="images/html5-2-app.jpg" alt="source = http://blog.leapmotion.com/" style="border: 0px;"></p>
+            <p>Combines layout engines of browsers, with the V8 runtime of Node to create non mobile apps.</p>
+        </section>
+        <section>
+            <h2>2 Mixed JavaScript Context</h2>
+            <ol>
+                <li>WebKit - window &amp; document</li>
+                <li>Node - var foo = require('foo');</li>
+            </ol>
+        </section>
+        <section>
             <h2>Installation</h2>
             <ul>
+                <li><a href="https://www.npmjs.org/package/nodewebkit">npm install nodewebkit</a></li>
                 <li>Download: <a href="https://github.com/rogerwang/node-webkit">https://github.com/rogerwang/node-webkit</a></li>
-                <li>Copy nw.app, to /Applications</li>
-                <li>update .bash_profile</li>
             </ul>
+
+        </section>
+        <section>
+            <h2>Running node-webkit (nw) on OSX</h2>
+            <p>Update .bash_profile</p>
             <pre>alias nw="/Applications/node-webkit.app/Contents/MacOS/node-webkit"</pre>
         </section>
         <section>
             <h2>Quickstart</h2>
-            
+            <ul>
+                <li>create index.html</li>
+                <li>create a manifest (package.json)</li>
+            </ul>
         </section>
         <section>
             <h2>Quickstart - index.html</h2>
@@ -174,9 +208,9 @@
         <section>
             <h2>package.json - other fields</h2>
             <ul>
-                <li>description - this is the launch HTML page.</li>
-                <li>version - this is the name</li>
-                <li>keywords - object (to be defined in next slide)</li>
+                <li>description.</li>
+                <li>version</li>
+                <li>keywords</li>
                 <li>maintainers/contributers</li>
                 <li>bugs - url for submitting bugs can be http or mailto</li>
                 <li>licenses</li>
