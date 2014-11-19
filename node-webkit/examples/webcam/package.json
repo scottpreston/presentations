@@ -8,7 +8,7 @@
         "title": "node-webkit demo",
         "toolbar": true,
         "frame": false,
-        "width": 1300,
+        "width": 800,
         "height": 600,
         "position": "mouse",
         "min_width": 640,
