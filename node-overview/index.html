@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>NodeJS Overview</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Scott Preston">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>Node & AngularJS</h1>
+
+            <p>
+                <small>Created by <a href="http://scottpreston.com">Scott Preston</a> / <a
+                        href="http://twitter.com/scottpreston">@scottpreston</a></small>
+            </p>
+        </section>
+        <section>
+            <h1>About Me</h1>
+            <ul>
+                <li>Practice Lead AIS/ICC - JavaScript/Mobile</li>
+                <li>Love JavaScript</li>
+                <li>Robots &amp; Smart Home Running in JS</li>
+            </ul>
+        </section>
+        <section>
+            <h1>NodeJS - Overview</h1>
+            <ul>
+                <li>Server Side JS</li>
+                <li>Node Tooling</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Notice something about this Deck?</h1>
+
+            <p>Reveal.JS</p>
+
+            <p>Served Up By Node Module (http-server)</p>
+        </section>
+        <section>
+            <h1>What's Node JS?</h1>
+
+            <p><img src="images/node.png"></p>
+        </section>
+
+        <section>
+            <h1>Non-Blocking / Async</h1>
+
+<pre>
+<code contenteditable>
+alert(1);
+alert(2);
+alert(3);
+
+// vs
+alert(1);
+setTimeout(function() { alert(2); }, 2000);
+alert(3);
+
+// or
+alert(1);
+$.ajax(url, function() {alert(2)});
+alert(3);
+
+</code></pre>
+
+        </section>
+
+        <section>
+            <h1>Node Is - Event Driven</h1>
+<pre>
+<code contenteditable>
+    alert(1);
+    setTimeout(url, function() {
+        event.emit("someevent");
+    }, 4000);
+    alert(3);
+
+    on("someevent", function() {
+        alert(2);
+    });
+
+</code></pre>
+        </section>
+
+        <section>
+            <h1>Node Installation</h1>
+            <ul>
+                <li>Install Via http://nodejs.org</li>
+                <li>Bundled with NPM (Node Package Manager)</li>
+            </ul>
+
+        </section>
+        <section>
+            <h1>Server Side</h1>
+        </section>
+        <section>
+            <h1>NodeJS - Hello World</h1>
+<pre>
+<code contenteditable>
+console.log('hello world');
+</code></pre>
+        </section>
+
+        <section>
+            <h1>NodeJS - Web Server</h1>
+<pre>
+<code contenteditable>
+var http = require('http');
+var server = http.createServer(function (request, response) {
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.end("Hello World\n");
+});
+server.listen(5000);
+</code></pre>
+        </section>
+
+        <section>
+            <h1>NPM</h1>
+            <p>package.json</p>
+            <p>Tells you what to install or what's installed.</p>
+            <p>--save-dev, --save, -g</p>
+        </section>
+
+        <section>
+            <h1>Node - Express</h1>
+<pre>
+<code contenteditable>
+    var express = require('express');
+    var app = express();
+
+    app.get('/', function (req, res) {
+    res.send('Hello World!');
+    });
+
+    var server = app.listen(3000, function () {
+
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('Example app listening at http://%s:%s', host, port);
+
+    });
+
+</code></pre>
+        </section>
+
+        <section>
+            <h1>Node - Express w/REST</h1>
+<pre>
+<code contenteditable>
+    // respond with "Hello World!" on the homepage
+    app.get('/', function (req, res) {
+    res.send('Hello World!');
+    });
+
+    // accept POST request on the homepage
+    app.post('/', function (req, res) {
+    res.send('Got a POST request');
+    });
+
+    // accept PUT request at /user
+    app.put('/user', function (req, res) {
+    res.send('Got a PUT request at /user');
+    });
+
+    // accept DELETE request at /user
+    app.delete('/user', function (req, res) {
+    res.send('Got a DELETE request at /user');
+    });
+
+
+</code></pre>
+        </section>
+
+        <section>
+            <h1>Node - MySQL</h1>
+<pre>
+<code contenteditable>
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: '192.168.188.10',
+    user: 'root',
+    password: 'password',
+    database: 'test'
+});
+
+connection.connect(function(err) {
+    console.log('connected as id ' + connection.threadId);
+});
+
+// read all
+connection.query('SELECT * from contact', function (err, rows, fields) {
+    console.log(rows);
+});
+connection.end();
+
+</code></pre>
+        </section>
+
+        <section>
+            <h1>Node - MongoDB</h1>
+<pre>
+<code contenteditable>
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+
+var Cat = mongoose.model('Cat', { name: String });
+
+var kitty = new Cat({ name: 'Tiger' });
+kitty.save(function (err) {
+
+if (err)
+    console.log('meow');
+});
+
+</code></pre>
+        </section>
+
+        <section>
+            <h1>Node - Creating A Module</h1>
+<pre>
+<code contenteditable>
+// the module Hello.js
+var Hello = function() {};
+Hello.prototype.sayHi = function() {
+    console.log('hello');
+}
+module.exports = Hello;
+
+// to import
+var h = require('./Hello.js');
+h.sayHi();
+
+</code></pre>
+        </section>
+        <section>
+            <h1>Tooling</h1>
+        </section>
+
+        <section>
+            <h1>BowerJS</h1>
+            <p><img src="images/bower.png"></p>
+            <p><a href="http://bower.io/">http://bower.io/</a></p>
+        </section>
+
+        <section>
+            <h1>Sample - bower.json</h1>
+<pre>
+<code contenteditable>
+    {
+    "name": "test-app",
+    "version": "0.0.1",
+    "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-mocks": "latest",
+    "angular-animate": "latest",
+    "angular-cookies": "latest",
+    "angular-loader": "latest",
+    "angular-resource": "latest",
+    "angular-sanitize": "latest",
+    "angular-touch": "latest",
+    "jquery": "latest",
+    "bootstrap": "latest",
+    "underscore": "latest",
+    "jasmine": "latest"
+    },
+    "private": true
+    }
+</code></pre>
+        </section>
+        <section>
+            <h1>Yoeman</h1>
+            <p><img src="images/yeoman.png"></p>
+            <p><a href="http://yeoman.io">http://yeoman.io/</a></p>
+        </section>
+
+        <section>
+            <h1>Grunt</h1>
+            <p><img src="images/grunt.png"></p>
+            <p><a href="http://gruntjs.com">http://gruntjs.com/</a></p>
+        </section>
+
+        <section>
+            <h1>Gulp</h1>
+            <p><img src="images/gulp.png"></p>
+            <p><a href="http://gulpjs.com">http://gulpjs.com/</a></p>
+
+
+        </section>
+        <section>
+            <h1>Sample - gulpfile.js</h1>
+<pre>
+<code contenteditable>
+
+    // Include gulp
+    var gulp = require('gulp');
+
+    // Include Our Plugins
+    var jshint = require('gulp-jshint');
+    var uglify = require('gulp-uglify');
+    var rename = require('gulp-rename');
+
+    // Lint Task
+    gulp.task('lint', function () {
+    return gulp.src('vizify.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+    });
+
+    // Concatenate & Minify JS
+    gulp.task('scripts', function () {
+    return gulp.src('vizify.js')
+    .pipe(rename('vizify.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('.'));
+    });
+
+    // Watch Files For Changes
+    gulp.task('watch', function () {
+    gulp.watch('vizify.js', ['lint', 'scripts']);
+    });
+
+    // Default Task
+    gulp.task('default', ['lint', 'scripts', 'watch']);
+</code></pre>
+        </section>
+        <section>
+            <h1>JS Hint</h1>
+            <p>Preventing Simple Mistakes, Etc.</p>
+            <p><a href="http://jshint.com">http://jshint.com/</a></p>
+        </section>
+
+        <section>
+            <h1>TestEm</h1>
+            <p><a href="https://github.com/airportyh/testem">https://github.com/airportyh/testem</a></p>
+        </section>
+        <section>
+            <h1>Sample - testem.json</h1>
+            <p>To Run - 'testem -ci'</p>
+<pre>
+<code contenteditable>
+{
+    "framework": "jasmine2",
+    "src_files": [
+    "hello.js",
+    "hello-spec.js"
+    ]
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h1>THE END</h1>
+            <h3>spreston@icct.com / @scottpreston</h3>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {
+                src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            }
+            }
+        ]
+    });
+
+</script>
+
+</body>
+</html>

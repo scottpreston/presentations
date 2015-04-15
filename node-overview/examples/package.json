@@ -1,0 +1,13 @@
+{
+  "name": "node-overview-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "none",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.12.3",
+    "mysql": "^2.6.2",
+    "testem": "^0.8.0-0"
+  }
+}
