@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "name": "test",
+    "type": "broadcast",
+    "data": "http:\/\/www.google.com",
+    "active": "1"
+  }
+  {
+    "id": "29",
+    "name": "bedroom-cold-warning",
+    "type": "notify",
+    "data": "bedroom cold warning",
+    "active": "1"
+  },
+  {
+    "id": "89",
+    "name": "jr-forward",
+    "type": "broadcast",
+    "data": "http:\/\/jarvis.prestonresearch.net\/control\/jr\/forward",
+    "active": "1"
+  }
+]
